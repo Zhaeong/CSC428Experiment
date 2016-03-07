@@ -2,24 +2,26 @@
 using System.Collections;
 
 [AddComponentMenu("Camera-Control/Mouse Orbit with zoom")]
-public class CameraController : MonoBehaviour
+public class MouseOrbit : MonoBehaviour
 {
 
     public Transform target;
-    public float distance = 2.5f;
-    public float xSpeed = 30.0f;
-    public float ySpeed = 30.0f;
+    public float distance;
+    public float xSpeed;
+    public float ySpeed;
 
-    public float yMinLimit = -20f;
-    public float yMaxLimit = 80f;
+    public float yMinLimit;
+    public float yMaxLimit;
 
-    public float distanceMin = .5f;
-    public float distanceMax = 15f;
+    public float distanceMin;
+    public float distanceMax;
 
     private new Rigidbody rigidbody;
 
     float x = 0.0f;
     float y = 0.0f;
+    int index = 1;
+    int [] defaultDistance = {1,2,3};
 
     // Use this for initialization
     void Start()
@@ -37,6 +39,22 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.V)){
+            index = (index + 1) % 3;
+        }
+        int defaultDis = defaultDistance[index];
+
+        //Updating camera distance on every frame
+        distance = Raycast3.distance3;
+
+        if (distance > defaultDis)
+        {
+            distance = defaultDis;
+        }
+    }
+
     void LateUpdate()
     {
         if (target)
@@ -48,15 +66,9 @@ public class CameraController : MonoBehaviour
 
             Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-            distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+            distance = Mathf.Clamp(distance, distanceMin, distanceMax);
 
-            RaycastHit hit;
-            if (Physics.Linecast(target.position, transform.position, out hit))
-            {
-                distance -= hit.distance;
-            }
-            Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-            Vector3 position = rotation * negDistance + target.position;
+            Vector3 position = rotation * new Vector3(0.0f, 0.0f, -distance) + target.position;
 
             transform.rotation = rotation;
             transform.position = position;
