@@ -11,5 +11,10 @@ public class PickupController : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         gameObject.SetActive(false);
+        if (other.tag == "Player")
+        {
+            GameController GC = other.GetComponent<GameController>();
+            GC.numPickups += 1;
+        }
     }
 }
