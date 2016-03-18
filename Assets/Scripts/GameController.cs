@@ -71,5 +71,18 @@ public class GameController : MonoBehaviour {
             else
                 transform.position = SpawnPointA.position;
         }
+        if (other.gameObject.CompareTag("MovingFloor"))
+        {
+            Debug.Log("Inside");
+            transform.parent = other.transform;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("MovingFloor"))
+        {
+            transform.parent = null;
+        }
     }
 }
