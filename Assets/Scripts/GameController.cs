@@ -31,6 +31,14 @@ public class GameController : MonoBehaviour {
 
         if(numPickups == totalCubes)
             bRestart = true;
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SceneManager.LoadScene(1);
+        } else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
 
